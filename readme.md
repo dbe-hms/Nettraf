@@ -1,44 +1,96 @@
-# Network sim 
+# 🧩 NetworkSim  
 
->Scripts and tools for Simulating network traffic and issues
->These project is intended to run on a Raspberry pi with two networks adapters.  Bridging them then causing faults,  slowing traffic,  dropping packets, causing jitter.  
+> Tools and scripts for simulating real-world network conditions such as packet loss, delay, jitter, and disconnections.
 
+This project is designed to run on a **Raspberry Pi** equipped with **two network adapters**.  
+By bridging the adapters, you can introduce various network faults and performance degradations to test the robustness of networked systems.
 
-## ✨ Features
+---
 
--   
--   
+## ✨ Features  
 
-# 🚀 Getting Started
+- Create and remove a network bridge between two interfaces  
+- Simulate network conditions such as:  
+  - Packet loss  
+  - Latency and jitter  
+  - Bandwidth throttling  
+  - Temporary disconnections  
+- Run interactively or automatically at startup  
 
-# Install necessary tools
+---
+
+## ⚙️ Requirements  
+
+### Software  
+
+```bash
 sudo apt update
+sudo apt install -y bridge-utils python3
+```
 
-sudo apt install -y bridge-utils
+### Hardware  
 
+- Raspberry Pi (tested on Pi 4)  
+- Secondary Ethernet interface (e.g., USB-to-Ethernet adapter)  
 
-### Prerequisites
-Python
+---
 
-##Hardware
-This setup requires a second Ethernet port connected via USB 
+## 🚀 Getting Started  
 
+### 1. Clone the repository  
 
-### SETUP
-Clone git repo
-This is designed to run on a raspberrypi with an additional USB Ethernet adapter.  
+```bash
+git clone https://github.com/<your-username>/NetworkSim.git
+cd NetworkSim
+```
 
-./setup_bridge.sh Will setup a bridge betwen eth0 and eth1
+### 2. Setup the bridge  
 
-./remove_bridge.sh Will remove the bridge
+Create a bridge between **eth0** and **eth1**:  
+```bash
+./setup_bridge.sh
+```
 
-./cycle_issues.py Will cycle through random issues causing data an assortment of delays, loss and disconnections between the two ports. 
+Remove the bridge when done:  
+```bash
+./remove_bridge.sh
+```
 
-./Uinput_issues.py Is intended to be run via terminal with the user picking the operating mode
+---
 
-### AUTO run setup
-In the terminal run **sudo crontab -e**  this will open a text editor to setup cron jobs.   Update the following line to directory to location repo was created and enter and add the text to the bottom of the File that opens.  
+## 🧪 Simulation Scripts  
 
-    @reboot / home/pi/Nettraf/setup_bridge.sh >>/home/pi/Nettraf/log.log 2>&1            
-    @reboot /usr/bin/python3 / home/pi/Nettraf/cycle_issues.py
+- **`cycle_issues.py`** — Cycles through random network conditions (delay, packet loss, disconnection, etc.)  
+- **`Uinput_issues.py`** — Interactive mode allowing you to select network conditions manually via terminal  
+
+---
+
+## 🔁 Auto-Start at Boot  
+
+To automatically set up the bridge and begin simulation at startup:  
+
+1. Open the root crontab editor:  
+   ```bash
+   sudo crontab -e
+   ```
+
+2. Add the following lines to the bottom (update the paths as needed):  
+   ```bash
+   @reboot /home/pi/NetworkSim/setup_bridge.sh >> /home/pi/NetworkSim/log.log 2>&1
+   @reboot /usr/bin/python3 /home/pi/NetworkSim/cycle_issues.py >> /home/pi/NetworkSim/log.log 2>&1
+   ```
+
+---
+
+## 🧰 Notes  
+
+- Always test carefully — these scripts intentionally disrupt network traffic.  Using SSH via an effected port may cause issues.   
+- Logs will be written to `log.log` if configured in cron.  
+- You can stop the simulation by removing the bridge or killing the Python process.
+
+---
+
+## 🧑‍💻 Author  
+
+Deryck
 
