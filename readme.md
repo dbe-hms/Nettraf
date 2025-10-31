@@ -1,4 +1,4 @@
-# 🧩 NetworkSim  
+# 🧩 Network Issue Sim  
 
 > Tools and scripts for simulating real-world network conditions such as packet loss, delay, jitter, and disconnections.
 
